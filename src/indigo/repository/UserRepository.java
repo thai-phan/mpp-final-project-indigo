@@ -1,6 +1,8 @@
 package indigo.repository;
 
 import indigo.model.User;
+import indigo.model.UserRole;
+import indigo.model.UserRoleEnum;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static indigo.Database.getConnection;
+import static indigo.repository.UserRoleRepository.getRoleFromRoleId;
 
 public class UserRepository {
 
@@ -30,7 +33,20 @@ public class UserRepository {
         return isUserAvailable;
     }
 
-    public static List<User> getUserByUserId(String username) {
+    public static boolean checkUserIsAdmin(String userId) {
+        List<User> users = getUserByUsername(userId);
+        boolean isAdmin = false;
+        if (!users.isEmpty()) {
+            User user = users.getFirst();
+            UserRole role = getRoleFromRoleId(user.getRoleId());
+            if (role.getRoleName() == UserRoleEnum.Admin) {
+                isAdmin = true;
+            }
+        }
+        return isAdmin;
+    }
+
+    public static List<User> getUserByUsername(String username) {
         List<User> users = new ArrayList<>();
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(

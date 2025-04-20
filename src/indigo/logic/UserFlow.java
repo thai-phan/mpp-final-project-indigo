@@ -1,14 +1,15 @@
 package indigo.logic;
 
+import indigo.model.User;
 import indigo.repository.UserRepository;
 
 import java.util.List;
 
-public class User {
+public class UserFlow {
 
     public static void startUserMainFlow() {
-        //
 
+        // authenticate
         boolean isUser = UserRepository.authenticateUser("thaiphan", "1234");
         if (isUser) {
             System.out.println("Login success!");
@@ -16,9 +17,19 @@ public class User {
             System.out.println("User information wrong!");
         }
 
-        List<indigo.model.User> aa = UserRepository.getUserByUserId("jasmine");
-        if (!aa.isEmpty()) {
+        // get User
+        List<User> users = UserRepository.getUserByUsername("jasmine");
+        if (!users.isEmpty()) {
             System.out.println("User available");
         }
+
+        // isAdmin User
+        String userId = "user001";
+        boolean isAdmin = UserRepository.checkUserIsAdmin(userId);
+        if (isAdmin) {
+            System.out.println("User is Admin");
+        }
+
+//         update use
     }
 }

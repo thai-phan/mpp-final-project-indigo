@@ -1,7 +1,7 @@
 package indigo;
 
 import static indigo.Database.queryToDatabase;
-import static indigo.logic.User.startUserMainFlow;
+import static indigo.logic.UserFlow.startUserMainFlow;
 
 public class Main {
 
@@ -11,7 +11,6 @@ public class Main {
 
 
 //        Scanner scanner = new Scanner(System.in);
-//
 //        System.out.println("Please input username:");
 //        String username = scanner.nextLine();
 //        System.out.println("Please input password");

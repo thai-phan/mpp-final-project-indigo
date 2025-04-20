@@ -34,7 +34,6 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-
     public void setUserId(String userId) {
         this.userId = userId;
     }
