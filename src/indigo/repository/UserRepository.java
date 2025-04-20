@@ -1,9 +1,13 @@
 package indigo.repository;
 
+import indigo.model.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static indigo.Database.getConnection;
 
@@ -26,43 +30,51 @@ public class UserRepository {
         return isUserAvailable;
     }
 
-    public static void getUserByUserId(String username) {
+    public static List<User> getUserByUserId(String username) {
+        List<User> users = new ArrayList<>();
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
                     "select * from expense_tracker_indigo.user where username = ?");
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("username");
+                User user = new User();
+                user.setUserId(resultSet.getString("user_id"));
+                user.setUsername(resultSet.getString("username"));
+                user.setEmail(resultSet.getString("email"));
+                user.setPhoneNumber(resultSet.getString("phone_number"));
+                user.setRoleId(resultSet.getString("role_id"));
+                users.add(user);
             }
         } catch (SQLException e) {
             System.err.println("Database Error: " + e.getMessage());
         }
+        return users;
     }
 
-    public static void createUser(String user_id, String username, String password, String email,
-                                  String phoneNumber, String userPosition) {
+    public static void createUser(User user) {
+
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO expense_tracker_indigo.user (user_id, username, password, email, phone_number, user_position_code) " +
+                    "INSERT INTO expense_tracker_indigo.user (user_id, username, password, email, phone_number, role_id) " +
                             "VALUES (?, ?, ?, ?, ?, ?)");
 
-            statement.setString(1, user_id);
-            statement.setString(2, username);
-            statement.setString(3, password);
-            statement.setString(4, email);
-            statement.setString(5, phoneNumber);
-            statement.setString(6, userPosition);
+            statement.setString(1, user.getUserId());
+            statement.setString(2, user.getUsername());
+            statement.setString(3, user.getPassword());
+            statement.setString(4, user.getEmail());
+            statement.setString(5, user.getPhoneNumber());
+            statement.setString(6, user.getRoleId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String name = resultSet.getString("username");
+                System.out.println("Create user success!");
             }
         } catch (SQLException e) {
             System.err.println("Database Error: " + e.getMessage());
         }
     }
 
-    public static void updateUser(String username, String password, String email, String phoneNumber, String userPositionCode) {
+    public static void updateUser(User user) {
         try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(
                     "update expense_tracker_indigo.user SET " +
@@ -70,13 +82,14 @@ public class UserRepository {
                             "password = ?, " +
                             "email = ?, " +
                             "phone_number = ?," +
-                            "user_position_code = ?" +
+                            "role_id = ?" +
                             "where user_id = ?");
-            statement.setString(1, username);
-            statement.setString(2, password);
-            statement.setString(3, email);
-            statement.setString(4, phoneNumber);
-            statement.setString(5, userPositionCode);
+            statement.setString(1, user.getUsername());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getPhoneNumber());
+            statement.setString(5, user.getRoleId());
+            statement.setString(6, user.getUserId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String name = resultSet.getString("username");
