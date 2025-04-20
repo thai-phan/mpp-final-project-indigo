@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("Welcome to Expense Tracker?");
+        System.out.println("Welcome to Expense Tracker!");
 
 
 //        Scanner scanner = new Scanner(System.in);
