@@ -7,21 +7,21 @@ USE expense_tracker_indigo;
 -- Table for user roles
 CREATE TABLE user_role
 (
-    user_position_code VARCHAR(20) PRIMARY KEY,
-    user_position_name VARCHAR(100),
-    description        TEXT
+    role_id     VARCHAR(20) PRIMARY KEY,
+    role_name   VARCHAR(100),
+    description TEXT
 );
 
 -- Table for users
 CREATE TABLE user
 (
-    user_id            VARCHAR(50) PRIMARY KEY,
-    username           VARCHAR(100) NOT NULL,
-    password           VARCHAR(100) NOT NULL,
-    email              VARCHAR(100),
-    phone_number       VARCHAR(20),
-    user_position_code VARCHAR(20),
-    FOREIGN KEY (user_position_code) REFERENCES user_role (user_position_code)
+    user_id      VARCHAR(50) PRIMARY KEY,
+    username     VARCHAR(100) NOT NULL,
+    password     VARCHAR(100) NOT NULL,
+    email        VARCHAR(100),
+    phone_number VARCHAR(20),
+    role_id      VARCHAR(20),
+    FOREIGN KEY (role_id) REFERENCES user_role (role_id)
         ON DELETE SET NULL ON UPDATE CASCADE
 );
 
@@ -60,13 +60,13 @@ CREATE TABLE expensecategory
 -- Table for reports
 CREATE TABLE report
 (
-    report_id          VARCHAR(50) PRIMARY KEY,
-    user_position_code VARCHAR(20),
-    user_id            VARCHAR(50),
-    start_date         DATE,
-    end_date           DATE,
-    format             VARCHAR(50),
-    FOREIGN KEY (user_position_code) REFERENCES user_role (user_position_code)
+    report_id  VARCHAR(50) PRIMARY KEY,
+    role_id    VARCHAR(20),
+    user_id    VARCHAR(50),
+    start_date DATE,
+    end_date   DATE,
+    format     VARCHAR(50),
+    FOREIGN KEY (role_id) REFERENCES user_role (role_id)
         ON DELETE SET NULL ON UPDATE CASCADE,
     FOREIGN KEY (user_id) REFERENCES user (user_id)
         ON DELETE CASCADE ON UPDATE CASCADE
@@ -81,14 +81,14 @@ VALUES ('cat001', 'Travel', 'Expenses related to business travel'),
        ('cat004', 'Entertainment', 'Client entertainment expenses');
 
 -- Insert into user_role
-INSERT INTO user_role (user_position_code, user_position_name, description)
+INSERT INTO user_role (role_id, role_name, description)
 VALUES ('role001', 'Admin', 'System Administrator'),
        ('role002', 'RegularUser', 'Regular User');
 
 -- Insert into user
-INSERT INTO user (user_id, username, password, email, phone_number, user_position_code)
-VALUES ('user001', 'johndoe', 'pass123', 'johndoe@example.com', '1234567890', 'role002'),
-       ('user002', 'janedoe', 'pass456', 'janedoe@example.com', '2345678901', 'role002'),
+INSERT INTO user (user_id, username, password, email, phone_number, role_id)
+VALUES ('user001', 'thaiphan', '1234', 'johndoe@example.com', '1234567890', 'role002'),
+       ('user002', 'jasmine', '1234', 'janedoe@example.com', '2345678901', 'role002'),
        ('user003', 'adminuser', 'adminpass', 'admin@example.com', '3456789012', 'role001');
 
 -- Insert into expense
@@ -106,7 +106,7 @@ VALUES ('exp001', 'cat001'),
        ('exp004', 'cat004');
 
 -- Insert into report
-INSERT INTO report (report_id, user_position_code, user_id, start_date, end_date, format)
+INSERT INTO report (report_id, role_id, user_id, start_date, end_date, format)
 VALUES ('rep001', 'role001', 'user001', '2025-04-01', '2025-04-15', 'PDF'),
        ('rep002', 'role001', 'user002', '2025-04-01', '2025-04-10', 'Excel'),
        ('rep003', 'role001', 'user003', '2025-04-01', '2025-04-05', 'HTML');
