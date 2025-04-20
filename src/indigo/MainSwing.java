@@ -18,7 +18,6 @@ public class MainSwing implements Runnable {
 
         System.out.println(name + " is a nice name!");
 
-
         EventQueue.invokeLater(new MainSwing());
     }
 

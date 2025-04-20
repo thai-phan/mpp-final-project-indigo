@@ -1,6 +1,5 @@
 package indigo;
 
-import static indigo.Database.queryToDatabase;
 import static indigo.logic.UserFlow.startUserMainFlow;
 
 public class Main {
@@ -19,9 +18,6 @@ public class Main {
 
 
         startUserMainFlow();
-
-
-        queryToDatabase();
 
     }
 }
