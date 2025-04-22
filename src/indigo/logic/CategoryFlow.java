@@ -9,16 +9,16 @@ public class CategoryFlow {
 
 
 
-        // view expense
+        // view category
 
 
-        // add expense
+        // add category
 
 
-        // update expense
+        // update category
 
 
-        // delete expense
+        // delete category
 
 
 
